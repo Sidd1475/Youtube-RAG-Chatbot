@@ -12,7 +12,7 @@ if "messages" not in st.session_state:
 
 if "pipeline" not in st.session_state:
     st.session_state.pipeline = RAGPipeline(
-        api_key = st.secrets("GEMINI_API_KEY")
+        api_key = st.secrets["GEMINI_API_KEY"]
     )
 # Track processed video
 if "current_video" not in st.session_state:
