@@ -25,6 +25,7 @@ class RAGPipeline:
             self.vector_store.load(self.index_path)
         else:
             print("Creating a new FAISS index..")
+            self.vector_store = None
         
         # Load processed video 
         if os.path.exists(self.processed_file):
@@ -38,7 +39,7 @@ class RAGPipeline:
             self.processed_videos = set()
 
     #PROCESS VIDEO
-    def process_video (self, video_id, language="en"):
+    def process_video(self, video_id, language="en"):
         if video_id in  self.processed_videos:
             print("Video already processed")
             return 
@@ -91,7 +92,8 @@ class RAGPipeline:
 
         query_vec = self.embedder.generate_embeddings([question])[0]
         
-
+        if self.vector_store is None:
+           return "Please process a video first.", []
 
         retrieved_chunks = self.vector_store.search(query_vec)
 

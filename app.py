@@ -36,7 +36,7 @@ def format_time(seconds):
     return f"{minutes}:{secs:02d}"
 
 # PROCESS VIDEO (only once)
-if video_id and st.session_state.current_video != video_id:
+if video_id and st.session_state.current_video == video_id and query:
     with st.spinner("⏳ Processing video... this may take a few seconds"):
         pipeline.process_video(video_id.strip(), language)
         st.session_state.current_video = video_id
