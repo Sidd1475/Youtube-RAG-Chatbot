@@ -9,6 +9,7 @@ from src.indexing.vector_store import VectorStore
 from src.generation.prompt_builder import build_prompt
 from src.generation.llm import GeminiGenerator
 from deep_translator import GoogleTranslator
+from youtube_transcript_api._errors import RequestBlocked, VideoUnavailable
 
 class RAGPipeline:
     def __init__(self, api_key):
@@ -46,7 +47,24 @@ class RAGPipeline:
         
         print("Processing Video...")
 
-        transcript = get_transcript(video_id, languages=[language])
+        transcript = None
+        languages_to_try = [language, "en", "hi"]
+
+        for lang in languages_to_try:
+            try:
+                transcript = get_transcript(video_id, languages=[lang])
+                if transcript:
+                    break
+            except RequestBlocked:
+                raise RuntimeError("TRANSCRIPT_BLOCKED")
+            except VideoUnavailable:
+                continue
+            except Exception:
+                continue
+            
+        #if still fails 
+        if not transcript:
+            raise RuntimeError("TRANSCRIPT_FAILED")
         
         if language != "en":
             for entry in transcript:

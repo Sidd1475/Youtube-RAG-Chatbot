@@ -42,10 +42,23 @@ if video_id and query:
     
     if st.session_state.current_video != video_id:
         with st.spinner("⏳ Processing video... this may take a few seconds"):
-            pipeline.process_video(video_id.strip(), language)
-            st.session_state.current_video = video_id
+            try:
+                pipeline.process_video(video_id.strip(), language)
+                st.session_state.current_video = video_id
+                st.success(" Video processed and ready!")
 
-        st.success("✅ Video processed and ready!")
+            except RuntimeError as e:
+                if str(e) == "TRANSCRIPT_BLOCKED":
+                    st.error("YouTube blocked transcript access. Try another video.")
+                elif str(e) == "NO_TRANSCRIPT":
+                    st.error("No subtitles available for this video.")
+                elif str(e) == "TRANSCRIPT_FAILED":
+                    st.error("Unable to fetch transcript.")
+                    st.info("Try another video or upload subtitles.")
+                else:
+                    st.error(" Unexpected error occurred.")
+
+                st.stop()
     
     # Store user message
     st.session_state.messages.append({
@@ -70,7 +83,7 @@ if video_id and query:
             st.error(answer)
         else:
             st.markdown(answer)
-            
+
     # show sources
     if sources:
         with st.expander("Sources"):
