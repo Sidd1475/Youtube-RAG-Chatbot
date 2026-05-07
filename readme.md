@@ -290,6 +290,11 @@ Deployment setup included:
 * cloud-compatible FAISS handling
 
 ---
+# UI Images - Streamlit
+<img width="1600" height="868" alt="b2f10527-6952-474d-b758-876474a37093" src="https://github.com/user-attachments/assets/446ea80e-b10b-47fe-a66a-74c7f28197f1" />
+<img width="1546" height="892" alt="1d12f343-6e9e-457b-8255-bd0b0aadbfc3" src="https://github.com/user-attachments/assets/423b89c8-0d41-420d-86de-70f9b763e975" />
+
+
 
 # ⚠️ Challenges Faced During Development
 
