@@ -25,6 +25,7 @@ language = st.selectbox("🌐 Select Subtitle Language", ["en", "hi"])
 video_id = st.text_input("📺 Enter YouTube Video ID")
 query = st.chat_input("Ask something about the video...")
 
+# Show chat history
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
@@ -35,22 +36,23 @@ def format_time(seconds):
     secs = int(seconds % 60)
     return f"{minutes}:{secs:02d}"
 
-# PROCESS VIDEO (only once)
-if video_id and st.session_state.current_video != video_id:
-    with st.spinner("⏳ Processing video... this may take a few seconds"):
-        pipeline.process_video(video_id.strip(), language)
-        st.session_state.current_video = video_id
+# Query flow
+if video_id and query:
+    # Ensure query is processed 
+    
+    if st.session_state.current_video != video_id:
+        with st.spinner("⏳ Processing video... this may take a few seconds"):
+            pipeline.process_video(video_id.strip(), language)
+            st.session_state.current_video = video_id
 
-    st.success("✅ Video processed and ready!")
-
-# Query 
-if video_id and st.session_state.current_video == video_id and query:
-
+        st.success("✅ Video processed and ready!")
+    
+    # Store user message
     st.session_state.messages.append({
         "role":"user",
         "content":query
     })
-
+    
     with st.chat_message("user"):
         st.markdown(query)
 
@@ -68,25 +70,23 @@ if video_id and st.session_state.current_video == video_id and query:
             st.error(answer)
         else:
             st.markdown(answer)
+            
+    # show sources
+    if sources:
+        with st.expander("Sources"):
+            for s in sources:
+                text = s["text"]
+                if isinstance(text, list):
+                    text = " ".join(text)
 
-    st.subheader("Answer")
-    st.write(answer)
+                st.markdown(
+                    f"""
+        **⏱ {format_time(s['start'])} - {format_time(s['end'])}**
 
-    st.subheader("Sources")
-
-    for s in sources:
-        text = s["text"]
-        if isinstance(text, list):
-            text = " ".join(text)
-
-        st.markdown(
-            f"""
-**⏱ {format_time(s['start'])} - {format_time(s['end'])}**
-
-{text[:300]}...
-"""
-        )
-        st.divider()
+        {text[:300]}...
+        """
+                )
+                st.divider()
     
     # store assistant message
     st.session_state.messages.append({

@@ -40,7 +40,7 @@ class RAGPipeline:
 
     #PROCESS VIDEO
     def process_video(self, video_id, language="en"):
-        if video_id in  self.processed_videos:
+        if video_id in  self.processed_videos and self.vector_store is not None:
             print("Video already processed")
             return 
         
@@ -93,7 +93,7 @@ class RAGPipeline:
         query_vec = self.embedder.generate_embeddings([question])[0]
         
         if self.vector_store is None:
-           return "Please process a video first.", []
+           return "Video not processed properly. Please try again.", []
 
         retrieved_chunks = self.vector_store.search(query_vec)
 
