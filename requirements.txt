@@ -33,3 +33,7 @@ tqdm>=4.66.0
 
 # translation 
 deep-translator
+
+groq
+yt-dlp
+youtube-transcript-api

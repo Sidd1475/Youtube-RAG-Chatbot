@@ -1,6 +1,8 @@
 import streamlit as st
 import os
 from src.pipeline.rag_pipeline import RAGPipeline
+from dotenv import load_dotenv
+load_dotenv()
 
 
 st.set_page_config(page_title="Youtube RAG Chatbot")
@@ -12,7 +14,7 @@ if "messages" not in st.session_state:
 
 if "pipeline" not in st.session_state:
     st.session_state.pipeline = RAGPipeline(
-        api_key = st.secrets["GEMINI_API_KEY"]
+        api_key = st.secrets["GEMINI_API_KEY"] or os.getenv("GEMINI_API_KEY")
     )
 # Track processed video
 if "current_video" not in st.session_state:
