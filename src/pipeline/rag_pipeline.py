@@ -66,9 +66,11 @@ class RAGPipeline:
         if not transcript:
             raise RuntimeError("TRANSCRIPT_FAILED")
         
-        if language != "en":
-            for entry in transcript:
+        for entry in transcript:
+            try:
                 entry["text"] = self.translator.translate(entry["text"])
+            except Exception:
+                pass
         
         
         cleaned = preprocess(transcript)
