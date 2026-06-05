@@ -69,8 +69,8 @@ class RAGPipeline:
         for entry in transcript:
             try:
                 entry["text"] = self.translator.translate(entry["text"])
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"Translation failed: {e}")
         
         
         cleaned = preprocess(transcript)
