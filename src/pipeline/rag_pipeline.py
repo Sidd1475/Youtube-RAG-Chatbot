@@ -17,7 +17,7 @@ class RAGPipeline:
         self.generator = GeminiGenerator(api_key)
         self.translator = GoogleTranslator(source='auto',target='en')
 
-        self.index_path = "data/faiss"
+        self.index_path = "data/faiss/{video_id}"
         self.processed_file = "data/processed_video.json"
         # Load or create vector store 
         if os.path.exists(f"{self.index_path}/index.faiss"):
