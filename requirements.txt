@@ -37,3 +37,4 @@ deep-translator
 groq
 yt-dlp>=2025.6.9
 torch>=2.2.0
+torchvision

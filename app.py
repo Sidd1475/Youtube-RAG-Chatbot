@@ -67,7 +67,7 @@ if video_id and query:
                     st.error("Unable to fetch transcript.")
                     st.info("Try another video.")
                 else:
-                    st.error(" Unexpected error occurred.")
+                    st.error(str(e))
 
                 st.stop()
     
