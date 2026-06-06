@@ -44,7 +44,12 @@ def format_time(seconds):
 
 # Query flow
 if video_id and query:
-    # Ensure query is processed 
+    # Clear old chat history
+    st.session_state.messages = []
+
+    # Reset pipeline state
+    pipeline.vector_store = None
+
     
     if st.session_state.current_video != video_id:
         with st.spinner("⏳ Processing video... this may take a few seconds"):

@@ -17,16 +17,16 @@ class RAGPipeline:
         self.generator = GeminiGenerator(api_key)
         self.translator = GoogleTranslator(source='auto',target='en')
 
-        self.index_path = "data/faiss/{video_id}"
+        self.index_path = "data/faiss"
         self.processed_file = "data/processed_video.json"
         # Load or create vector store 
-        if os.path.exists(f"{self.index_path}/index.faiss"):
-            print("Loading FAISS index..")
-            self.vector_store = VectorStore(dim=384)
-            self.vector_store.load(self.index_path)
-        else:
-            print("Creating a new FAISS index..")
-            self.vector_store = None
+        # if os.path.exists(f"{self.index_path}/index.faiss"):
+        #     print("Loading FAISS index..")
+        #     self.vector_store = VectorStore(dim=384)
+        #     self.vector_store.load(self.index_path)
+        # else:
+        print("Creating a new FAISS index..")
+        self.vector_store = None
         
         # Load processed video 
         if os.path.exists(self.processed_file):
@@ -41,11 +41,12 @@ class RAGPipeline:
 
     #PROCESS VIDEO
     def process_video(self, video_id, language="en"):
-        if video_id in  self.processed_videos and self.vector_store is not None:
-            print("Video already processed")
-            return 
         
-        print("Processing Video...")
+        print(f"Processing Video: {video_id}")
+        self.index_path = f"data/faiss/{video_id}"
+        os.makedirs(self.index_path, exist_ok=True)
+        # IMPORTANT: Reset vector store for every new video
+        self.vector_store = None
 
         transcript = None
         languages_to_try = [language, "en", "hi"]
@@ -86,8 +87,11 @@ class RAGPipeline:
         self.vector_store.add(embedded_data)
         self.vector_store.save(self.index_path)
 
-        self.processed_videos.add(video_id)
-        self._save_processed()
+        # self.processed_videos.add(video_id)
+        # self._save_processed()
+
+        print(f"VIDEO ID = {video_id}")
+        print(f"INDEX PATH = {self.index_path}")
 
     # Query 
     def rewrite_query(self, question , history):
@@ -100,6 +104,7 @@ class RAGPipeline:
         
         prev_question = prev_user_msgs[-2]
         return prev_question+" "+question
+    
     
     def query(self, question, history=[]):
         
@@ -138,8 +143,10 @@ class RAGPipeline:
             else :
                 return "Something went wrong. Please try again.", []
 
-
+        print(f"Querying from index path = {self.index_path}")
         return answer , retrieved_chunks
+    
+        
     
     # Save processed videos 
 
