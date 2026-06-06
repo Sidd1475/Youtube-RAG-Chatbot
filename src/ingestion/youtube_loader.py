@@ -36,9 +36,14 @@ def get_transcript(video_id, languages=["en", "hi", "es"]):
         print(f"Transcript API Failed: {e}")
         print("Falling back to Groq Whisper...")
 
-        audio_path = download_audio(video_id)
+        try:
+            audio_path = download_audio(video_id)
 
-        transcript_text = transcribe_audio(audio_path)
+            transcript_text = transcribe_audio(audio_path)
+
+        except Exception as e:
+            print(f"Whisper Fallback Failed: {e}")
+            raise
 
         if os.path.exists(audio_path):
             os.remove(audio_path)

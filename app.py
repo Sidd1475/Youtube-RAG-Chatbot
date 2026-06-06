@@ -65,7 +65,7 @@ if video_id and query:
                     st.error("No subtitles available for this video.")
                 elif str(e) == "TRANSCRIPT_FAILED":
                     st.error("Unable to fetch transcript.")
-                    st.info("Try another video or upload subtitles.")
+                    st.info("Try another video.")
                 else:
                     st.error(" Unexpected error occurred.")
 
