@@ -35,5 +35,4 @@ tqdm>=4.66.0
 deep-translator
 
 groq
-yt-dlp
-youtube-transcript-api
+yt-dlp>=2025.6.9
