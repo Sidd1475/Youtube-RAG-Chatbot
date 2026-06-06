@@ -43,7 +43,7 @@ def get_transcript(video_id, languages=["en", "hi", "es"]):
 
         except Exception as e:
             print(f"Whisper Fallback Failed: {e}")
-            raise
+            raise RuntimeError(f"WHISPER_FALLBACK_FAILED: {e}")
 
         if os.path.exists(audio_path):
             os.remove(audio_path)

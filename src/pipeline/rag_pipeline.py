@@ -60,8 +60,9 @@ class RAGPipeline:
                 raise RuntimeError("TRANSCRIPT_BLOCKED")
             except VideoUnavailable:
                 continue
-            except Exception:
-                continue
+            except Exception as e:
+                print(f"Transcript Error: {e}")
+                raise
             
         #if still fails 
         if not transcript:
