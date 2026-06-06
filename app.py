@@ -1,5 +1,9 @@
 import streamlit as st
+import sys
 import os
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, ROOT_DIR)
 from src.pipeline.rag_pipeline import RAGPipeline
 from dotenv import load_dotenv
 load_dotenv()

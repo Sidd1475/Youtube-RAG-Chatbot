@@ -100,7 +100,7 @@ class RAGPipeline:
            return question
         
         prev_user_msgs = [m["content"] for m in history if m["role"] == "user"]
-        if len(prev_user_msgs)<5:
+        if len(prev_user_msgs)<2:
             return question 
         
         prev_question = prev_user_msgs[-2]

@@ -52,3 +52,17 @@ dist/
 
 # 🔥 HuggingFace cache (optional)
 .cache/
+
+# Vector database
+data/faiss/
+
+# Temporary files
+temp/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment
+.env
+venv/

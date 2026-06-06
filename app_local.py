@@ -39,9 +39,16 @@ def format_time(seconds):
 
 # PROCESS VIDEO (only once)
 if video_id and st.session_state.current_video != video_id:
+    st.session_state.messages = []
     with st.spinner("⏳ Processing video... this may take a few seconds"):
-        pipeline.process_video(video_id.strip(), language)
-        st.session_state.current_video = video_id
+        try:
+            pipeline.process_video(video_id.strip(), language)
+            st.session_state.current_video = video_id.strip()
+            st.success("✅ Video processed and ready!")
+
+        except Exception as e:
+            st.error(f"Error: {e}")
+            st.stop()
 
     st.success("✅ Video processed and ready!")
 
